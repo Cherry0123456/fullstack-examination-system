@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>My Results</title>
+
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial,sans-serif;
+    }
+
+    body{
+        background:#f4f6f9;
+    }
+
+    .navbar{
+        background:#2c3e50;
+        color:white;
+        padding:20px;
+        text-align:center;
+        font-size:28px;
+        font-weight:bold;
+    }
+
+    .container{
+        width:95%;
+        margin:30px auto;
+    }
+
+    .title{
+        font-size:28px;
+        margin-bottom:20px;
+    }
+
+    .search-box{
+        width:100%;
+        padding:12px;
+        border:1px solid #ccc;
+        border-radius:8px;
+        margin-bottom:20px;
+    }
+
+    table{
+        width:100%;
+        border-collapse:collapse;
+        background:white;
+        border-radius:10px;
+        overflow:hidden;
+        box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+    }
+
+    th{
+        background:#3498db;
+        color:white;
+        padding:15px;
+    }
+
+    td{
+        padding:15px;
+        text-align:center;
+        border-bottom:1px solid #ddd;
+    }
+
+    tr:hover{
+        background:#f8f9fa;
+    }
+
+    .pass{
+        background:#27ae60;
+        color:white;
+        padding:6px 12px;
+        border-radius:20px;
+    }
+
+    .fail{
+        background:#e74c3c;
+        color:white;
+        padding:6px 12px;
+        border-radius:20px;
+    }
+
+    .certificate-btn{
+        background:#27ae60;
+        color:white;
+        text-decoration:none;
+        padding:8px 15px;
+        border-radius:5px;
+    }
+
+    .certificate-btn:hover{
+        background:#1e8449;
+    }
+
+    .dashboard-btn{
+        display:inline-block;
+        margin-top:25px;
+        background:#3498db;
+        color:white;
+        text-decoration:none;
+        padding:12px 20px;
+        border-radius:8px;
+    }
+
+    .dashboard-btn:hover{
+        background:#2980b9;
+    }
+
+</style>
+
+<script>
+
+    function searchExam() {
+
+        let input =
+            document.getElementById("searchInput")
+            .value.toUpperCase();
+
+        let table =
+            document.getElementById("resultsTable");
+
+        let tr = table.getElementsByTagName("tr");
+
+        for(let i=1;i<tr.length;i++){
+
+            let td = tr[i].getElementsByTagName("td")[0];
+
+            if(td){
+
+                let txtValue =
+                    td.textContent || td.innerText;
+
+                if(txtValue.toUpperCase().indexOf(input) > -1){
+
+                    tr[i].style.display = "";
+
+                }else{
+
+                    tr[i].style.display = "none";
+
+                }
+            }
+        }
+    }
+
+</script>
+
+</head>
+
+<body>
+
+<div class="navbar">
+    My Results
+</div>
+
+<div class="container">
+
+<div class="title">
+    Examination History
+</div>
+
+<input
+    type="text"
+    id="searchInput"
+    class="search-box"
+    placeholder="Search Exam..."
+    onkeyup="searchExam()"
+>
+
+<table id="resultsTable">
+
+    <tr>
+        <th>Exam Name</th>
+        <th>Score</th>
+        <th>Percentage</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Certificate</th>
+        <th>Analysis</th>
+        <th>Feedback</th>
+    </tr>
+
+    {% for result in results %}
+
+    <tr>
+
+        <td>{{ result[1] }}</td>
+
+        <td>
+            {{ result[2] }}/{{ result[3] }}
+        </td>
+
+        <td>
+            {{ result[4] }}%
+        </td>
+
+        <td>
+
+            {% if result[5] == "PASS" %}
+
+                <span class="pass">
+                    PASS
+                </span>
+
+            {% else %}
+
+                <span class="fail">
+                    FAIL
+                </span>
+
+            {% endif %}
+
+        </td>
+
+        <td>
+            {{ result[6] }}
+        </td>
+
+        <td>
+
+            {% if result[5] == "PASS" %}
+
+            <a
+                class="certificate-btn"
+                href="{{ url_for('certificate',
+                exam_id=result[0]) }}"
+            >
+                Download
+            </a>
+
+            {% else %}
+
+            Not Eligible
+
+            {% endif %}
+
+        </td>
+<td>
+    <a href="{{ url_for('analysis', exam_id=result[0]) }}">
+    View Analysis
+</a>
+</td>
+    <td>
+    <a href="{{ url_for('feedback',
+    exam_id=result[0]) }}">
+        Give Feedback
+    </a>
+</td>
+</tr>
+    {% endfor %}
+
+</table>
+
+<a
+    href="{{ url_for('student_dashboard') }}"
+    class="dashboard-btn"
+>
+    ← Back to Dashboard
+</a>
+
+</div>
+
+</body>
+</html>

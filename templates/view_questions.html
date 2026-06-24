@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>View Questions</title>
+
+<style>
+
+body{
+    font-family:'Segoe UI';
+    background:#f4f7fc;
+    margin:0;
+}
+
+.header{
+    background:#173f7a;
+    color:white;
+    padding:20px;
+}
+
+.container{
+    width:90%;
+    margin:30px auto;
+}
+
+.question-card{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:15px;
+    box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+}
+
+.question{
+    font-size:20px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.option{
+    margin:8px 0;
+}
+
+.correct{
+    color:green;
+    font-weight:bold;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 20px;
+    background:#3498db;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>{{ exam_name }}</h1>
+</div>
+
+<div class="container">
+
+{% for q in questions %}
+
+<div class="question-card">
+
+    <div class="question">
+        Q{{ loop.index }}. {{ q[2] }}
+    </div>
+
+    <div class="option">
+        A. {{ q[3] }}
+    </div>
+
+    <div class="option">
+        B. {{ q[4] }}
+    </div>
+
+    <div class="option">
+        C. {{ q[5] }}
+    </div>
+
+    <div class="option">
+        D. {{ q[6] }}
+    </div>
+
+    <br>
+
+    <div class="correct">
+        Correct Answer : {{ q[7] }}
+    </div>
+
+</div>
+
+{% endfor %}
+
+<a href="{{ url_for('view_exams') }}"
+class="back-btn">
+
+← Back To Exams
+
+</a>
+
+</div>
+
+</body>
+</html>

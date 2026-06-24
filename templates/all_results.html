@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Student Results</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f7fc;
+}
+
+.header{
+    background:linear-gradient(90deg,#0f2c59,#173f7a);
+    color:white;
+    padding:25px 40px;
+}
+
+.header h1{
+    font-size:35px;
+}
+
+.container{
+    width:95%;
+    margin:30px auto;
+}
+
+.title{
+    margin-bottom:25px;
+}
+
+.title h2{
+    color:#102542;
+}
+
+.search-box{
+    margin-bottom:20px;
+}
+
+.search-box input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.table-container{
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0px 5px 20px rgba(0,0,0,0.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#173f7a;
+    color:white;
+    padding:15px;
+}
+
+td{
+    padding:15px;
+    text-align:center;
+    border-bottom:1px solid #eee;
+}
+
+tr:hover{
+    background:#f8f9fc;
+}
+
+.pass{
+    background:#d4efdf;
+    color:#1e8449;
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.fail{
+    background:#fadbd8;
+    color:#c0392b;
+    padding:6px 12px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.analysis-btn{
+    text-decoration:none;
+    background:#3498db;
+    color:white;
+    padding:8px 15px;
+    border-radius:8px;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:25px;
+    padding:12px 20px;
+    background:#2c3e50;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>📊 Student Results</h1>
+</div>
+
+<div class="container">
+
+<div class="title">
+    <h2>All Student Exam Results</h2>
+</div>
+
+<div class="search-box">
+    <input
+        type="text"
+        id="searchResult"
+        placeholder="🔍 Search Student Or Exam..."
+        onkeyup="searchResults()">
+</div>
+
+<div class="table-container">
+
+<table id="resultTable">
+
+<tr>
+    <th>Student</th>
+    <th>Exam</th>
+    <th>Score</th>
+    <th>Percentage</th>
+    <th>Status</th>
+    <th>Date</th>
+    <th>Analysis</th>
+</tr>
+
+{% for result in results %}
+
+<tr>
+
+```
+<td>{{ result[1] }}</td>
+
+<td>{{ result[2] }}</td>
+
+<td>{{ result[3] }}/{{ result[4] }}</td>
+
+<td>{{ result[5] }}%</td>
+
+<td>
+
+    {% if result[6] == 'PASS' %}
+
+    <span class="pass">
+        PASS
+    </span>
+
+    {% else %}
+
+    <span class="fail">
+        FAIL
+    </span>
+
+    {% endif %}
+
+</td>
+
+<td>{{ result[7] }}</td>
+
+<td>
+
+    <a
+    href="/analysis/{{ result[0] }}"
+    class="analysis-btn">
+
+    View
+
+    </a>
+
+</td>
+```
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<a
+href="{{ url_for('admin_dashboard') }}"
+class="back-btn">
+
+← Back To Dashboard
+
+</a>
+
+</div>
+
+<script>
+
+function searchResults(){
+
+    let input =
+    document.getElementById(
+        "searchResult"
+    ).value.toLowerCase();
+
+    let rows =
+    document.querySelectorAll(
+        "#resultTable tr"
+    );
+
+    rows.forEach(function(row,index){
+
+        if(index===0) return;
+
+        let text =
+        row.innerText.toLowerCase();
+
+        if(text.includes(input)){
+            row.style.display="";
+        }
+        else{
+            row.style.display="none";
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>

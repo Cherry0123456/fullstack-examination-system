@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam Result</title>
+</head>
+<body>
+
+<h1>Exam Result</h1>
+
+<h2>
+Score: {{ score }}/{{ total_questions }}
+</h2>
+
+<h2>
+Percentage: {{ percentage }}%
+</h2>
+
+{% if status == "PASS" %}
+
+<h2 style="color:green;">
+    PASS
+</h2>
+
+<br>
+
+<a href="{{ url_for('certificate', exam_id=exam_id) }}">
+    <button>
+        Download Certificate
+    </button>
+</a>
+
+{% else %}
+
+<h2 style="color:red;">
+    FAIL
+</h2>
+
+<p>
+Certificate is available only for students who pass the exam.
+</p>
+
+{% endif %}
+
+<br><br>
+
+<a href="{{ url_for('student_dashboard') }}">
+    <button>
+        Back to Dashboard
+    </button>
+</a>
+
+</body>
+</html>

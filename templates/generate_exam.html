@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Exam</title>
+</head>
+<body>
+
+<h1>Generate Exam From Question Bank</h1>
+
+{% if message %}
+    <h3 style="color:green;">
+        {{ message }}
+    </h3>
+{% endif %}
+
+<form method="POST">
+
+    <label>Exam Name:</label>
+    <input type="text"
+           name="exam_name"
+           required>
+
+    <br><br>
+
+    <label>Subject:</label>
+    <select name="subject" required>
+        <option value="Python">Python</option>
+        <option value="Java">Java</option>
+        <option value="DBMS">DBMS</option>
+        <option value="Computer Networks">Computer Networks</option>
+        <option value="Data Mining">Data Mining</option>
+        <option value="Aptitude">Aptitude</option>
+    </select>
+
+    <br><br>
+
+    <label>Difficulty:</label>
+    <select name="difficulty" required>
+        <option value="All">All</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+    </select>
+
+    <br><br>
+
+    <label>Duration (Minutes):</label>
+    <input type="number"
+           name="duration"
+           required>
+
+    <br><br>
+
+    <label>Number of Questions:</label>
+    <input type="number"
+           name="num_questions"
+           required>
+
+    <br><br>
+
+    <button type="submit">
+        Generate Exam
+    </button>
+    <a href="{{ url_for('admin_dashboard') }}">
+    <button type="button">
+        Back to Dashboard
+    </button>
+</a>
+</form>
+
+</body>
+</html>

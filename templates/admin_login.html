@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Admin Login</title>
+
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial,sans-serif;
+    }
+
+    body{
+        background:linear-gradient(135deg,#27ae60,#145a32);
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .login-container{
+        background:white;
+        width:400px;
+        padding:40px;
+        border-radius:15px;
+        box-shadow:0px 5px 20px rgba(0,0,0,0.2);
+    }
+
+    h2{
+        text-align:center;
+        margin-bottom:25px;
+        color:#145a32;
+    }
+
+    label{
+        display:block;
+        margin-top:15px;
+        margin-bottom:5px;
+        font-weight:bold;
+    }
+
+    input{
+        width:100%;
+        padding:12px;
+        border:1px solid #ccc;
+        border-radius:8px;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
+        background:#27ae60;
+        color:white;
+        border:none;
+        border-radius:8px;
+        margin-top:25px;
+        cursor:pointer;
+        font-size:16px;
+    }
+
+    button:hover{
+        background:#1e8449;
+    }
+
+    .error{
+        color:red;
+        text-align:center;
+        margin-top:10px;
+    }
+
+    .links{
+        text-align:center;
+        margin-top:20px;
+    }
+
+    .links a{
+        text-decoration:none;
+        color:#27ae60;
+        font-weight:bold;
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+
+<h2>Admin Login</h2>
+
+<form method="POST">
+
+    <label>Username</label>
+    <input type="text"
+           name="username"
+           required>
+
+    <label>Password</label>
+    <input type="password"
+           name="password"
+           required>
+
+    <button type="submit">
+        Login
+    </button>
+
+</form>
+
+{% if error %}
+<div class="error">
+    {{ error }}
+</div>
+{% endif %}
+
+<div class="links">
+
+    <a href="{{ url_for('home') }}">
+        ← Back to Home
+    </a>
+
+</div>
+
+
+</div>
+
+</body>
+</html>

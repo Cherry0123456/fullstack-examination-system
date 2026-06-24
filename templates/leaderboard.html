@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Leaderboard</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    background:#f4f6f9;
+    padding:30px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#2c3e50;
+    color:white;
+    padding:15px;
+}
+
+td{
+    padding:15px;
+    text-align:center;
+    border-bottom:1px solid #ddd;
+}
+
+.rank1{
+    color:gold;
+    font-weight:bold;
+}
+
+.rank2{
+    color:silver;
+    font-weight:bold;
+}
+
+.rank3{
+    color:#cd7f32;
+    font-weight:bold;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:20px;
+    padding:12px 20px;
+    background:#3498db;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>🏆 Global Leaderboard</h1>
+
+<table>
+
+<tr>
+    <th>Rank</th>
+    <th>Student Name</th>
+    <th>Best Percentage</th>
+</tr>
+
+{% for student in leaderboard_data %}
+
+<tr>
+
+<td>
+
+{% if loop.index == 1 %}
+<span class="rank1">🥇 1</span>
+
+{% elif loop.index == 2 %}
+<span class="rank2">🥈 2</span>
+
+{% elif loop.index == 3 %}
+<span class="rank3">🥉 3</span>
+
+{% else %}
+{{ loop.index }}
+{% endif %}
+
+</td>
+
+<td>{{ student[0] }}</td>
+
+<td>{{ student[1] }}%</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a href="{{ url_for('student_dashboard') }}"
+class="back-btn">
+
+← Back to Dashboard
+
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>

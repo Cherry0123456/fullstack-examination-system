@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Available Exams</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f7fc;
+}
+
+.header{
+    background:linear-gradient(90deg,#0f2c59,#173f7a);
+    color:white;
+    padding:25px 50px;
+}
+
+.header h1{
+    font-size:38px;
+}
+
+.container{
+    width:90%;
+    margin:40px auto;
+}
+
+.page-title{
+    margin-bottom:30px;
+}
+
+.page-title h2{
+    font-size:42px;
+    color:#102542;
+}
+
+.page-title p{
+    color:#666;
+    font-size:18px;
+}
+
+.exam-card{
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0px 5px 20px rgba(0,0,0,0.08);
+}
+
+.exam-left{
+    flex:1;
+}
+
+.exam-title{
+    font-size:32px;
+    font-weight:bold;
+    color:#102542;
+    margin-bottom:20px;
+}
+
+.exam-details{
+    display:flex;
+    gap:80px;
+}
+
+.detail h4{
+    color:#666;
+    margin-bottom:5px;
+}
+
+.detail p{
+    font-size:22px;
+    color:#102542;
+    font-weight:600;
+}
+
+.exam-right{
+    text-align:center;
+    min-width:250px;
+}
+
+.badge{
+    display:inline-block;
+    padding:10px 20px;
+    border-radius:30px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.in-progress{
+    background:#fff4d6;
+    color:#d68910;
+}
+
+.not-started{
+    background:#d4efdf;
+    color:#1e8449;
+}
+
+.time-left{
+    color:red;
+    font-size:28px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.resume-btn{
+    background:#2874f0;
+    color:white;
+    text-decoration:none;
+    padding:15px 35px;
+    border-radius:10px;
+    display:inline-block;
+    font-size:20px;
+}
+
+.start-btn{
+    background:#27ae60;
+    color:white;
+    text-decoration:none;
+    padding:15px 35px;
+    border-radius:10px;
+    display:inline-block;
+    font-size:20px;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:30px;
+    background:#3498db;
+    color:white;
+    text-decoration:none;
+    padding:15px 30px;
+    border-radius:10px;
+}
+.attempted-badge{
+    background:#d5f5e3;
+    color:#1e8449;
+    padding:12px 20px;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    display:inline-block;
+}
+
+.attempted-text{
+    margin-top:10px;
+    color:#555;
+    font-size:15px;
+}
+
+</style>
+
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🎓 Smart Exam System</h1>
+</div>
+
+<div class="container">
+
+    <div class="page-title">
+        <h2>Available Exams</h2>
+        <p>Select an exam to start or resume your attempt.</p>
+    </div>
+
+    {% for exam in exams %}
+
+<div class="exam-card">
+
+    <div class="exam-left">
+
+        <div class="exam-title">
+            {{ exam.exam_name }}
+        </div>
+
+        <div class="exam-details">
+
+            <div class="detail">
+                <h4>Subject</h4>
+                <p>{{ exam.subject }}</p>
+            </div>
+
+            <div class="detail">
+                <h4>Duration</h4>
+                <p>{{ exam.duration }} Min</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="exam-right">
+
+    {% if exam.attempted %}
+
+        <div class="attempted-badge">
+            ✓ Already Attempted
+        </div>
+
+        <div class="attempted-text">
+            Exam Completed Successfully
+        </div>
+
+    {% elif exam.resume %}
+
+        <div class="badge in-progress">
+            ⏳ Exam In Progress
+        </div>
+
+        <div class="time-left">
+            {{ exam.remaining_time // 60 }} Min Left
+        </div>
+
+        <a
+        href="{{ url_for('take_exam', exam_id=exam.exam_id) }}"
+        class="resume-btn">
+
+            Resume Exam
+
+        </a>
+
+    {% else %}
+
+        <div class="badge not-started">
+            ✅ Ready To Start
+        </div>
+
+        <a
+        href="{{ url_for('exam_instructions', exam_id=exam.exam_id) }}"
+        class="start-btn">
+
+            Start Exam
+
+        </a>
+
+    {% endif %}
+
+</div>
+</div>
+
+{% endfor %}
+
+    <a
+    href="{{ url_for('student_dashboard') }}"
+    class="back-btn">
+
+        ← Back To Dashboard
+
+    </a>
+
+</div>
+
+</body>
+</html>

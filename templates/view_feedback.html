@@ -1,0 +1,25 @@
+<h2>Student Feedback</h2>
+
+<table border="1">
+    <tr>
+        <th>Student ID</th>
+        <th>Exam ID</th>
+        <th>Rating</th>
+        <th>Comments</th>
+    </tr>
+
+    {% for f in feedbacks %}
+    <tr>
+        <td>{{ f[0] }}</td>
+        <td>{{ f[1] }}</td>
+        <td>{{ f[2] }} ⭐</td>
+        <td>{{ f[3] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<a
+    href="{{ url_for('admin_dashboard') }}"
+    class="dashboard-btn"
+>
+    ← Back to Dashboard
+</a>

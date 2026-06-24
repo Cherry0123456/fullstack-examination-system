@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Add Question</title>
+</head>
+<body>
+
+<h2>Add Question</h2>
+
+<form method="POST">
+
+Question<br>
+<textarea name="question" required></textarea>
+
+<br><br>
+
+Option A
+<input type="text" name="option_a" required>
+
+<br><br>
+
+Option B
+<input type="text" name="option_b" required>
+
+<br><br>
+
+Option C
+<input type="text" name="option_c" required>
+
+<br><br>
+
+Option D
+<input type="text" name="option_d" required>
+
+<br><br>
+
+Correct Option
+
+<select name="correct_option">
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+    <option>D</option>
+</select>
+
+<br><br>
+
+<button type="submit">
+    Save Question
+</button>
+
+<a href="/view_exams">
+    <button type="button">
+        Back
+    </button>
+</a>
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Question Bank</title>
+</head>
+<body>
+
+<h1>Upload Question Bank</h1>
+
+{% if message %}
+    <h3 style="color:green;">
+        {{ message }}
+    </h3>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+
+    <input
+        type="file"
+        name="excel_file"
+        accept=".xlsx,.xls"
+        required
+    >
+
+    <br><br>
+
+    <button type="submit">
+        Upload
+    </button>
+
+</form>
+
+<br><br>
+
+<a href="/admin_dashboard">
+    <button>
+        Back to Dashboard
+    </button>
+</a>
+
+</body>
+</html>

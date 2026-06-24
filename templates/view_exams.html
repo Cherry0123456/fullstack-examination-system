@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>View Exams</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f4f7fc;
+}
+
+.header{
+    background:linear-gradient(90deg,#0f2c59,#173f7a);
+    color:white;
+    padding:25px 50px;
+}
+
+.header h1{
+    font-size:36px;
+}
+
+.container{
+    width:92%;
+    margin:30px auto;
+}
+
+.page-title{
+    margin-bottom:25px;
+}
+
+.page-title h2{
+    color:#102542;
+    font-size:38px;
+}
+
+.page-title p{
+    color:#666;
+    margin-top:5px;
+}
+
+.search-box{
+    margin-bottom:25px;
+}
+
+.search-box input{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.exam-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
+    gap:25px;
+}
+
+.exam-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    transition:.3s;
+}
+
+.exam-card:hover{
+    transform:translateY(-5px);
+}
+
+.exam-title{
+    font-size:28px;
+    color:#102542;
+    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.exam-details{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.detail{
+    background:#f8f9fb;
+    padding:12px;
+    border-radius:10px;
+}
+
+.detail h4{
+    color:#666;
+    font-size:14px;
+}
+
+.detail p{
+    color:#102542;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:8px;
+    color:white;
+    font-weight:bold;
+}
+
+.add-btn{
+    background:#27ae60;
+}
+
+.view-btn{
+    background:#3498db;
+}
+
+.delete-btn{
+    background:#e74c3c;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:30px;
+    padding:15px 25px;
+    border-radius:10px;
+    background:#2c3e50;
+    color:white;
+    text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <h1>🎓 Smart Exam System - Admin Panel</h1>
+</div>
+
+<div class="container">
+
+<div class="page-title">
+    <h2>📚 Manage Exams</h2>
+    <p>View, manage and monitor all created exams.</p>
+</div>
+
+<div class="search-box">
+    <input
+        type="text"
+        id="searchExam"
+        placeholder="🔍 Search Exam By Name Or Subject..."
+        onkeyup="searchExam()">
+</div>
+
+<div class="exam-grid" id="examGrid">
+
+{% for exam in exams %}
+
+<div class="exam-card">
+
+<div class="exam-title">
+    {{ exam[1] }}
+</div>
+
+<div class="exam-details">
+
+    <div class="detail">
+        <h4>Subject</h4>
+        <p>{{ exam[2] }}</p>
+    </div>
+
+    <div class="detail">
+        <h4>Duration</h4>
+        <p>{{ exam[3] }} Min</p>
+    </div>
+
+    <div class="detail">
+        <h4>Total Marks</h4>
+        <p>{{ exam[4] }}</p>
+    </div>
+
+    <div class="detail">
+        <h4>Questions</h4>
+        <p>{{ exam[5] }}</p>
+    </div>
+
+    <div class="detail">
+        <h4>Attempts</h4>
+        <p>{{ exam[6] }}</p>
+    </div>
+
+</div>
+
+<div class="actions">
+
+    <a
+    href="/add_questions/{{ exam[0] }}"
+    class="btn add-btn">
+        ➕ Add Questions
+    </a>
+
+    <a
+    href="/view_questions/{{ exam[0] }}"
+    class="btn view-btn">
+        👁 View Questions
+    </a>
+
+    <a
+    href="/delete_exam/{{ exam[0] }}"
+    class="btn delete-btn"
+    onclick="return confirm('Delete this exam?');">
+        🗑 Delete
+    </a>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<a
+href="/admin_dashboard"
+class="back-btn">
+
+← Back To Dashboard
+
+</a>
+
+</div>
+
+<script>
+
+function searchExam(){
+
+    let input =
+    document.getElementById(
+        "searchExam"
+    ).value.toLowerCase();
+
+    let cards =
+    document.querySelectorAll(
+        ".exam-card"
+    );
+
+    cards.forEach(function(card){
+
+        let text =
+        card.innerText.toLowerCase();
+
+        if(text.includes(input)){
+            card.style.display="block";
+        }
+        else{
+            card.style.display="none";
+        }
+
+    });
+}
+
+</script>
+
+</body>
+</html>

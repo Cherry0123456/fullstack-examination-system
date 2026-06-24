@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Online Examination</title>
+
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial,sans-serif;
+    }
+
+    body{
+        background:#f4f6f9;
+    }
+
+    .header{
+        background:#2c3e50;
+        color:white;
+        padding:20px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    }
+
+    .timer{
+        background:#e74c3c;
+        padding:10px 20px;
+        border-radius:8px;
+        font-size:22px;
+        font-weight:bold;
+    }
+
+    .container{
+        display:flex;
+        padding:20px;
+        gap:20px;
+    }
+
+    .exam-area{
+        flex:1;
+    }
+
+    .sidebar{
+        width:280px;
+        background:white;
+        padding:20px;
+        border-radius:15px;
+        box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+        height:fit-content;
+    }
+
+    .sidebar h3{
+        margin-bottom:15px;
+    }
+
+    .question-nav{
+        display:grid;
+        grid-template-columns:repeat(4,1fr);
+        gap:10px;
+    }
+
+    .q-btn{
+        padding:10px;
+        text-align:center;
+        background:#ddd;
+        border-radius:5px;
+        cursor:pointer;
+        font-weight:bold;
+    }
+
+    .current{
+        background:#3498db !important;
+        color:white;
+    }
+
+    .answered{
+        background:#27ae60 !important;
+        color:white;
+    }
+    .visited{
+    background:#e74c3c !important;
+    color:white;
+}
+.review-btn{
+    background:#8e44ad;
+    color:white;
+}
+
+.review-btn:hover{
+    background:#6c3483;
+}
+
+.review{
+    background:#8e44ad !important;
+    color:white;
+}
+
+.visited{
+    background:#e74c3c !important;
+    color:white;
+}
+
+.answered{
+    background:#27ae60 !important;
+    color:white;
+}
+
+.current{
+    border:3px solid #000;
+}
+
+    .question-card{
+        background:white;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0px 3px 10px rgba(0,0,0,0.1);
+        min-height:300px;
+    }
+
+    .question-card h3{
+        margin-bottom:20px;
+    }
+
+    .option{
+        margin-top:15px;
+        font-size:17px;
+    }
+
+    .option input{
+        margin-right:10px;
+    }
+
+    .navigation{
+        margin-top:20px;
+        display:flex;
+        gap:10px;
+    }
+
+    button{
+        border:none;
+        padding:12px 20px;
+        border-radius:8px;
+        cursor:pointer;
+        font-size:15px;
+    }
+
+    .prev-btn{
+        background:#f39c12;
+        color:white;
+    }
+
+    .next-btn{
+        background:#3498db;
+        color:white;
+    }
+
+    .submit-btn{
+        background:#27ae60;
+        color:white;
+    }
+
+    .progress{
+        margin-bottom:15px;
+        font-size:18px;
+        font-weight:bold;
+    }
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+<div>
+
+    <h2>{{ exam_name }}</h2>
+
+    <p style="margin-top:5px;">
+        Subject: {{ subject }}
+    </p>
+
+</div>
+
+<div id="timer" class="timer">
+    Loading...
+</div>
+
+</div>
+
+<form method="POST" id="examForm">
+
+<div class="container">
+
+<!-- LEFT SIDE -->
+
+<div class="exam-area">
+
+    <div class="progress">
+        Total Questions: {{ questions|length }}
+    </div>
+
+    {% for q in questions %}
+
+    <div
+        class="question-card"
+        id="question{{ loop.index }}"
+        {% if not loop.first %}
+        style="display:none;"
+        {% endif %}
+    >
+
+        <h3>
+            Question {{ loop.index }}
+        </h3>
+
+        <p>
+            {{ q[2] }}
+        </p>
+
+        <div class="option">
+            <label>
+                <input
+type="radio"
+name="question_{{ q[0] }}"
+value="A"
+{% if saved_answers.get(q[0]) == 'A' %}
+checked
+{% endif %}
+onchange="
+markAnswered('{{ loop.index }}');
+saveAnswer('{{ q[0] }}', this.value);
+">
+
+                {{ q[3] }}
+            </label>
+        </div>
+
+        <div class="option">
+            <label>
+                <input
+type="radio"
+name="question_{{ q[0] }}"
+value="B"
+{% if saved_answers.get(q[0]) == 'B' %}
+checked
+{% endif %}
+onchange="
+markAnswered('{{ loop.index }}');
+saveAnswer('{{ q[0] }}', this.value);
+">
+
+                {{ q[4] }}
+            </label>
+        </div>
+
+        <div class="option">
+            <label>
+                <input
+type="radio"
+name="question_{{ q[0] }}"
+value="C"
+{% if saved_answers.get(q[0]) == 'C' %}
+checked
+{% endif %}
+onchange="
+markAnswered('{{ loop.index }}');
+saveAnswer('{{ q[0] }}', this.value);
+">
+
+                {{ q[5] }}
+            </label>
+        </div>
+
+        <div class="option">
+            <label>
+                <input
+type="radio"
+name="question_{{ q[0] }}"
+value="D"
+{% if saved_answers.get(q[0]) == 'D' %}
+checked
+{% endif %}
+onchange="
+markAnswered('{{ loop.index }}');
+saveAnswer('{{ q[0] }}', this.value);
+">
+
+                {{ q[6] }}
+            </label>
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    <div class="navigation">
+
+    <button
+        type="button"
+        class="prev-btn"
+        onclick="previousQuestion()">
+        Previous
+    </button>
+
+    <button
+        type="button"
+        class="review-btn"
+        onclick="markForReview()">
+        Mark For Review
+    </button>
+
+    <button
+        type="button"
+        class="next-btn"
+        onclick="nextQuestion()">
+        Next
+    </button>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+
+<div class="sidebar">
+
+    <h3>Questions</h3>
+<div style="margin-bottom:15px;">
+
+<div>
+<span style="
+background:#27ae60;
+padding:5px 10px;
+border-radius:5px;
+color:white;">
+Answered
+</span>
+</div>
+
+<br>
+
+<div>
+<span style="
+background:#e74c3c;
+padding:5px 10px;
+border-radius:5px;
+color:white;">
+Visited
+</span>
+</div>
+
+<br>
+
+<div>
+<span style="
+background:#8e44ad;
+padding:5px 10px;
+border-radius:5px;
+color:white;">
+Review
+</span>
+</div>
+
+</div>
+    <div class="question-nav">
+
+        {% for q in questions %}
+
+        <div
+            id="nav{{ loop.index }}"
+            class="q-btn"
+            onclick="jumpToQuestion('{{ loop.index }}')">
+
+            {{ loop.index }}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+    <br>
+
+    <button
+    type="button"
+    class="submit-btn"
+    style="width:100%;"
+    onclick="confirmSubmit()">
+
+    Submit Exam
+
+</button>
+
+</div>
+
+</div>
+
+</form>
+const examId = Number("{{ exam_id }}");
+
+<script>
+const examId = "{{ exam_id }}";
+
+
+let currentQuestion = 1;
+
+let totalQuestions =Number("{{ questions|length }}");
+
+function showQuestion(num){
+
+    for(let i=1;i<=totalQuestions;i++){
+
+        document.getElementById(
+            "question"+i
+        ).style.display="none";
+
+        document.getElementById(
+            "nav"+i
+        ).classList.remove("current");
+    }
+
+    document.getElementById(
+        "question"+num
+    ).style.display="block";
+
+    let nav =
+    document.getElementById(
+        "nav"+num
+    );
+
+    nav.classList.add("current");
+
+    if(
+        !nav.classList.contains("answered")
+        &&
+        !nav.classList.contains("review")
+    ){
+        nav.classList.add("visited");
+    }
+}
+
+function nextQuestion(){
+
+    if(currentQuestion < totalQuestions){
+
+        currentQuestion++;
+
+        showQuestion(currentQuestion);
+    }
+}
+
+function previousQuestion(){
+
+    if(currentQuestion > 1){
+
+        currentQuestion--;
+
+        showQuestion(currentQuestion);
+    }
+}
+
+function jumpToQuestion(num){
+
+    currentQuestion = parseInt(num);
+
+    showQuestion(currentQuestion);
+}
+
+function markAnswered(num){
+
+    let nav =
+    document.getElementById(
+        "nav"+num
+    );
+
+    nav.classList.remove("visited");
+
+    nav.classList.remove("review");
+
+    nav.classList.add("answered");
+}
+function markForReview(){
+
+    let nav =
+    document.getElementById(
+        "nav"+currentQuestion
+    );
+
+    nav.classList.remove("visited");
+
+    nav.classList.remove("answered");
+
+    nav.classList.add("review");
+}
+function saveAnswer(questionId, answer){
+console.log(
+        "Autosave Called",
+        questionId,
+        answer
+    );
+fetch('/autosave_exam',{
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/json'
+},
+
+body:JSON.stringify({
+
+exam_id: examId,
+
+question_id: questionId,
+
+answer: answer,
+
+remaining_time: timeLeft
+
+})
+
+});
+
+}
+
+showQuestion(1);
+
+window.onload = function(){
+
+    document
+    .querySelectorAll(
+        'input[type="radio"]:checked'
+    )
+    .forEach(function(radio){
+
+        let card =
+            radio.closest('.question-card');
+
+        let number =
+            card.id.replace(
+                'question',
+                ''
+            );
+
+        let nav =
+            document.getElementById(
+                'nav' + number
+            );
+
+        if(nav){
+
+            nav.classList.remove('visited');
+            nav.classList.add('answered');
+
+        }
+
+    });
+
+};
+
+let duration =
+Number("{{ duration }}");
+
+let timeLeft =Number("{{ remaining_time }}");
+
+function updateTimer(){
+
+    let minutes =
+        Math.floor(timeLeft/60);
+
+    let seconds =
+        timeLeft%60;
+
+    document
+        .getElementById("timer")
+        .innerHTML =
+        minutes + ":" +
+        (seconds < 10 ? "0" : "") +
+        seconds;
+
+    if(timeLeft <= 0){
+
+        clearInterval(countdown);
+
+        alert(
+            "Time is up! Exam will be submitted automatically."
+        );
+
+        document
+            .getElementById("examForm")
+            .submit();
+
+        return;
+    }
+
+    timeLeft--;
+}
+
+updateTimer();
+
+let countdown =
+setInterval(
+    updateTimer,
+    1000
+);
+
+function confirmSubmit(){
+
+    let unanswered = 0;
+
+    for(let i=1;i<=totalQuestions;i++){
+
+        let answered =
+        document.querySelector(
+            'input[name^="question_"]:checked'
+        );
+
+    }
+
+    document
+    .querySelectorAll('.question-card')
+    .forEach(function(card){
+
+        if(
+            !card.querySelector(
+                'input[type="radio"]:checked'
+            )
+        ){
+            unanswered++;
+        }
+
+    });
+
+    let message =
+        "Are you sure you want to submit the exam?\n\n";
+
+    if(unanswered > 0){
+
+        message +=
+        "You still have "
+        + unanswered +
+        " unanswered question(s).\n\n";
+    }
+
+    message +=
+    "After submission you cannot modify your answers.";
+
+    if(confirm(message)){
+
+        document
+        .getElementById("examForm")
+        .submit();
+    }
+}
+</script>
+
+</body>
+</html>

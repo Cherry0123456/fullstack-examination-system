@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Student Registration</title>
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
+
+    body{
+        background:linear-gradient(
+            135deg,
+            #3498db,
+            #2c3e50
+        );
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .register-container{
+        background:white;
+        padding:40px;
+        width:400px;
+        border-radius:15px;
+        box-shadow:0px 5px 20px rgba(0,0,0,0.2);
+    }
+
+    h2{
+        text-align:center;
+        margin-bottom:25px;
+        color:#2c3e50;
+    }
+
+    label{
+        display:block;
+        margin-top:15px;
+        margin-bottom:5px;
+        font-weight:bold;
+    }
+
+    input{
+        width:100%;
+        padding:12px;
+        border:1px solid #ccc;
+        border-radius:8px;
+    }
+
+    input:focus{
+        outline:none;
+        border-color:#3498db;
+    }
+
+    button{
+        width:100%;
+        padding:12px;
+        background:#3498db;
+        color:white;
+        border:none;
+        border-radius:8px;
+        margin-top:25px;
+        cursor:pointer;
+        font-size:16px;
+    }
+
+    button:hover{
+        background:#2980b9;
+    }
+
+    .links{
+        text-align:center;
+        margin-top:20px;
+    }
+
+    .links a{
+        text-decoration:none;
+        color:#3498db;
+        font-weight:bold;
+    }
+
+    .links a:hover{
+        text-decoration:underline;
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<div class="register-container">
+
+<h2>Student Registration</h2>
+
+<form method="POST">
+
+    <label>Full Name</label>
+
+    <input
+        type="text"
+        name="name"
+        required
+    >
+
+    <label>Email Address</label>
+
+    <input
+        type="email"
+        name="email"
+        required
+    >
+
+    <label>Password</label>
+
+    <input
+        type="password"
+        name="password"
+        required
+    >
+
+    <button type="submit">
+        Register
+    </button>
+
+</form>
+
+<div class="links">
+
+    Already have an account?
+
+    <a href="{{ url_for('login') }}">
+        Login Here
+    </a>
+
+    <br><br>
+
+    <a href="{{ url_for('home') }}">
+        ← Back to Home
+    </a>
+
+</div>
+
+
+</div>
+
+</body>
+</html>
