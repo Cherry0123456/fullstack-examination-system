@@ -194,12 +194,27 @@
 </div>
 
 <form method="POST" id="examForm">
-
+<input type="hidden" id="cheating_count" value="0">
 <div class="container">
 
 <!-- LEFT SIDE -->
 
 <div class="exam-area">
+
+    <div style="
+    background:#fff3cd;
+    color:#856404;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:15px;
+    font-weight:bold;
+    border:1px solid #ffeeba;
+    ">
+
+    ⚠ Warning: Tab switching, minimizing the browser, or leaving the exam page is monitored.
+    Multiple violations may automatically submit your exam.
+
+    </div>
 
     <div class="progress">
         Total Questions: {{ questions|length }}
@@ -657,6 +672,104 @@ function confirmSubmit(){
     }
 }
 </script>
+<script>
 
+let cheatingCount = 0;
+
+document.addEventListener("visibilitychange", function(){
+
+    if(document.hidden){
+
+        cheatingCount++;
+
+        alert(
+            "Warning! Tab switching detected.\n\n" +
+            "Attempt: " + cheatingCount
+        );
+
+        fetch('/track_cheating',{
+
+            method:'POST',
+
+            headers:{
+                'Content-Type':'application/json'
+            },
+
+            body:JSON.stringify({
+
+                exam_id: examId,
+
+                cheating_count: cheatingCount
+
+            })
+
+        });
+
+        if(cheatingCount >= 3){
+
+            alert(
+                "Exam terminated due to multiple tab switches."
+            );
+
+            document.getElementById(
+                "examForm"
+            ).submit();
+        }
+
+    }
+
+});
+// Detect exiting fullscreen
+document.addEventListener('fullscreenchange', function () {
+
+    if (!document.fullscreenElement) {
+
+        cheatingCount++;
+
+        alert(
+            "Warning! You exited fullscreen mode.\n" +
+            "Violations: " + cheatingCount + "/3"
+        );
+
+        if (cheatingCount >= 3) {
+
+            alert("Exam terminated due to multiple violations.");
+
+            document.getElementById("examForm").submit();
+        }
+    }
+
+});
+document.addEventListener("contextmenu", function(e){
+    e.preventDefault();
+});
+document.addEventListener("keydown", function(e){
+
+    if(
+        e.ctrlKey &&
+        (
+            e.key === "c" ||
+            e.key === "u" ||
+            e.key === "s" ||
+            e.key === "p"
+        )
+    ){
+
+        e.preventDefault();
+
+    }
+
+});
+window.onload = function(){
+
+    if(document.documentElement.requestFullscreen){
+
+        document.documentElement.requestFullscreen();
+
+    }
+
+};
+
+</script>
 </body>
 </html>

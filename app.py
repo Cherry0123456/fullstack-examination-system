@@ -1275,7 +1275,36 @@ def all_results():
         results=results
     )
 
+@app.route('/track_cheating', methods=['POST'])
+def track_cheating():
 
+    if 'student_id' not in session:
+        return jsonify({'status':'error'})
+
+    data = request.json
+
+    exam_id = data['exam_id']
+    cheating_count = data['cheating_count']
+
+    cur = mysql.connection.cursor()
+
+    cur.execute("""
+    UPDATE exam_sessions
+    SET cheating_count=%s
+    WHERE student_id=%s
+    AND exam_id=%s
+    """,
+    (
+        cheating_count,
+        session['student_id'],
+        exam_id
+    ))
+
+    mysql.connection.commit()
+
+    cur.close()
+
+    return jsonify({'status':'success'})
 
 @app.route('/delete_exam/<int:exam_id>')
 def delete_exam(exam_id):
